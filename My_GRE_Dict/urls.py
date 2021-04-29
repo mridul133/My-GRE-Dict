@@ -15,9 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from pages.views import home_view
+from pages.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_view),
+    path('manage/', manage_view),
+    path('manage/clear_db', clear_database),
+    path('manage/refresh_words', refresh_words),
+    path('manage/reset_all_weights_to_max', reset_all_weights_to_max),
+    path('manage/initialize_db_with_magoosh1000', initialize_db_with_magoosh1000),
 ]
