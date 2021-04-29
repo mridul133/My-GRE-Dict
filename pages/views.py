@@ -8,6 +8,7 @@ from pages.models import Word
 # Create your views here.
 
 def home_view(request, *args, **kwargs):
+    print("---> 2 ---> ", request.POST)
     return render(request, "home.html", {})
 
 def manage_view(request, *args, **kwargs):
@@ -17,8 +18,17 @@ def manage_view(request, *args, **kwargs):
 
 #==================================== Helper Functions ===================================
 
-def add_new_word():
-    print("added")
+def add_new_word(request):
+
+    word = fix_lower_upper(request.POST['new_word'])
+    pos = fix_lower_upper(request.POST['new_word_pos'])
+    definition = fix_lower_upper(request.POST['new_word_def'])
+    example = fix_lower_upper(request.POST['new_word_example'])
+    
+    Word.objects.create(Word = word, POS = pos, Definition = definition, Example = example, Weight = 100.0, AppearCnt = 0)
+
+    return HttpResponse("""<html><script>window.location.replace('/');</script></html>""")
+
 
 def delete_word():
     print("deleted")

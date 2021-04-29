@@ -5,7 +5,14 @@
 
 <body>
     
-<p>welcome</p>
+    <form action="add_new_word" method="POST"> {% csrf_token %}
+        Add New Word <br>
+        Word <input type="text" name="new_word" value="" required> <br>
+        POS <input type="text" name="new_word_pos" value=""> <br>
+        Definition <input type="text" name="new_word_def" value="" required> <br>
+        Example <input type="text" name="new_word_example" value=""> <br>
+        <input type="submit" value="OK">
+    </form>
 
 </body>
 </html>

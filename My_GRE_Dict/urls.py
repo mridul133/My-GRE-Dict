@@ -25,4 +25,5 @@ urlpatterns = [
     path('manage/refresh_words', refresh_words),
     path('manage/reset_all_weights_to_max', reset_all_weights_to_max),
     path('manage/initialize_db_with_magoosh1000', initialize_db_with_magoosh1000),
+    path('add_new_word', add_new_word),
 ]
