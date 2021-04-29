@@ -3,6 +3,7 @@ from django.http import HttpResponse
 import json
 import os
 from pages.models import Word
+from django.contrib import messages 
 
 
 # Create your views here.
@@ -44,8 +45,8 @@ def initialize_db_with_magoosh1000(request):
     cnt = 0
     for curr in data:
         cnt += 1
-        if(cnt >= 20):
-            break
+        # if(cnt >= 20):
+        #     break
 
         curr['word'] = fix_lower_upper(curr['word'])
         curr['pos'] = fix_lower_upper(curr['pos'])
@@ -53,6 +54,9 @@ def initialize_db_with_magoosh1000(request):
         curr['example'] = fix_lower_upper(curr['example'])
 
         Word.objects.create(Word = curr['word'], POS = curr['pos'], Definition = curr['definition'], Example = curr['example'], Weight = 100.0, AppearCnt = 0)
+
+    messages.success(request, "Initialization successfull !")
+
 
     return HttpResponse("""<html><script>window.location.replace('/manage');</script></html>""")
 
@@ -65,6 +69,8 @@ def reset_all_weights_to_max(request):
         word.Weight = 100.0
         word.save()
     
+    messages.success(request, "Weights have been reset successfully !")
+
     return HttpResponse("""<html><script>window.location.replace('/manage');</script></html>""")
 
 
@@ -79,11 +85,14 @@ def refresh_words(request):
         word.Example = fix_lower_upper(word.Example)
         word.save()
     
+    messages.success(request, "Words have been refreshed successfully !")
+
     return HttpResponse("""<html><script>window.location.replace('/manage');</script></html>""")
 
 
 def clear_database(request):
     Word.objects.all().delete()
+    messages.success(request, "Database has been cleared successfully !")
     return HttpResponse("""<html><script>window.location.replace('/manage');</script></html>""")
 
 

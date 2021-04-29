@@ -1,5 +1,42 @@
-.testclass
-{
-    font-size: 50px;
-    color: red;
+body {
+    background: url('background.jpg') no-repeat center center fixed;
+    background-size: 100% 100%;
+}
+
+.logo {
+    margin-left: 1%;
+    height: 8%;
+    width: 9%;
+    cursor: pointer;
+}
+
+.word_container {
+    margin-left: 37%;
+}
+
+.manage_btn_container {
+    margin-left: 37%;
+}
+
+.manage_btn {
+    font-size: 22px;
+    width: 80%;
+    height: 55px;
+    margin-bottom: 4px;
+    border-radius: 10px;
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.alert_success {
+    width: 40%;
+    margin-left: 30%;
+    position: fixed;
+    background-color: #5dce8c;
+    opacity: 0.75;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 22px;
+    top: 10px;
+    text-align: center;
 }

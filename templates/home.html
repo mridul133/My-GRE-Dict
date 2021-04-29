@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     {% load static %}
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 
 <body>
-    
+
+    <a href="/"><img src="{% static 'logo.png' %}" class="logo" onclick="."></a>
     <form action="add_new_word" method="POST"> {% csrf_token %}
-        <h1 class="testclass">Add New Word</h1> <br>
-        Word <input type="text" name="new_word" value="" required> <br>
-        POS <input type="text" name="new_word_pos" value=""> <br>
-        Definition <input type="text" name="new_word_def" value="" required> <br>
-        Example <input type="text" name="new_word_example" value=""> <br>
-        <input type="submit" value="OK">
+
+        <div class="word_container">
+            Add New Word <br> Word <input type="text" name="new_word" value="" required> <br> POS <input type="text" name="new_word_pos" value=""> <br> Definition
+            <input type="text" name="new_word_def" value="" required> <br> Example <input type="text" name="new_word_example" value=""> <br>
+            <input type="submit" value="OK">
+        </div>
     </form>
 
 </body>
+
 </html>
