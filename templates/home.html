@@ -8,15 +8,61 @@
 
 <body>
 
-    <a href="/"><img src="{% static 'logo.png' %}" class="logo" onclick="."></a>
-    <form action="add_new_word" method="POST"> {% csrf_token %}
+    <a href="/"><img src="{% static 'logo.png' %}" class="logo"></a>
 
-        <div class="word_container">
-            Add New Word <br> Word <input type="text" name="new_word" value="" required> <br> POS <input type="text" name="new_word_pos" value=""> <br> Definition
-            <input type="text" name="new_word_def" value="" required> <br> Example <input type="text" name="new_word_example" value=""> <br>
-            <input type="submit" value="OK">
-        </div>
-    </form>
+    {%if messages %} {% for msg in messages %}
+    <div class="alert_success" id="msg" role="alert"> {{ msg }} </div>
+    {% endfor %} {% endif %}
+
+
+    <button class="show" aria-haspopup="true">Add New Word</button>
+
+    <div class="modal_mask" role="dialog"></div>
+    <div class="modal" role="alert">
+        <button class="close_modal" role="button">X</button>
+
+        <form action="add_new_word" method="POST"> {% csrf_token %}
+
+            <div class="word_container">
+                <input type="text" name="new_word" placeholder="Word*" required><br>
+                <input type="text" name="new_word_pos" placeholder="Part of Speech"><br>
+                <textarea rows="4" cols="35" name="new_word_def" placeholder="Definition*" required></textarea><br>
+                <textarea rows="8" cols="35" name="new_word_example" placeholder="Example"></textarea><br>
+                <input type="submit" value="Add">
+            </div>
+        </form>
+
+    </div>
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+    <script>
+        setTimeout(function() {
+            if ($('#msg').length > 0) {
+                $('#msg').remove();
+            }
+        }, 3000)
+    </script>
+
+    <script>
+        $(".show").on("click", function() {
+            $(".modal_mask").addClass("active");
+        });
+
+        function closeModal() {
+            $(".modal_mask").removeClass("active");
+        }
+        $(".close_modal").on("click", function() {
+            closeModal();
+        });
+        $(document).keyup(function(e) {
+            if (e.keyCode == 27) {
+                closeModal();
+            }
+        });
+    </script>
 
 </body>
 

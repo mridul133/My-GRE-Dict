@@ -28,6 +28,8 @@ def add_new_word(request):
     
     Word.objects.create(Word = word, POS = pos, Definition = definition, Example = example, Weight = 100.0, AppearCnt = 0)
 
+    messages.success(request, "New word added !")
+
     return HttpResponse("""<html><script>window.location.replace('/');</script></html>""")
 
 
@@ -56,7 +58,6 @@ def initialize_db_with_magoosh1000(request):
         Word.objects.create(Word = curr['word'], POS = curr['pos'], Definition = curr['definition'], Example = curr['example'], Weight = 100.0, AppearCnt = 0)
 
     messages.success(request, "Initialization successfull !")
-
 
     return HttpResponse("""<html><script>window.location.replace('/manage');</script></html>""")
 

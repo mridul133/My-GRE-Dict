@@ -8,12 +8,13 @@
 
 <body>
 
-    <a href="/"><img src="{% static 'logo.png' %}" class="logo" onclick="."></a>
+    <a href="/"><img src="{% static 'logo.png' %}" class="logo"></a>
 
 
     {%if messages %} {% for msg in messages %}
     <div class="alert_success" id="msg" role="alert"> {{ msg }} </div>
     {% endfor %} {% endif %}
+
     <div class="manage_btn_container">
 
 
