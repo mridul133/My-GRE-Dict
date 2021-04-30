@@ -3,14 +3,37 @@ from django.http import HttpResponse
 import json
 import os
 from pages.models import Word
+from pages.models import Global
 from django.contrib import messages 
+import random
 
 
 # Create your views here.
 
 def home_view(request, *args, **kwargs):
-    print("---> 2 ---> ", request.POST)
-    return render(request, "home.html", {})
+
+    if('word' in request.POST):
+        update_info_about_old_word(request)
+    
+    word = get_random_word()
+
+    global_var = Global.objects.all()
+    
+    ret = {}
+
+    ret['word'] = word[0]
+    ret['pos'] = "("+word[1]+")"
+    ret['def'] = word[2]
+    ret['exm'] = word[3]
+    ret['weight'] = word[4]
+    ret['cnt'] = word[5]
+    ret['alpha_sort'] = global_var[0].AlphaSort
+    ret['mastered'] = global_var[0].MasteredCnt
+    ret['total'] = global_var[0].TotalWords
+
+    print("ret ----- >", ret)
+
+    return render(request, "home.html", ret)
 
 def manage_view(request, *args, **kwargs):
     return render(request, "manage.html", {})
@@ -47,8 +70,6 @@ def initialize_db_with_magoosh1000(request):
     cnt = 0
     for curr in data:
         cnt += 1
-        # if(cnt >= 20):
-        #     break
 
         curr['word'] = fix_lower_upper(curr['word'])
         curr['pos'] = fix_lower_upper(curr['pos'])
@@ -93,6 +114,7 @@ def refresh_words(request):
 
 def clear_database(request):
     Word.objects.all().delete()
+    Global.objects.all().delete()
     messages.success(request, "Database has been cleared successfully !")
     return HttpResponse("""<html><script>window.location.replace('/manage');</script></html>""")
 
@@ -125,3 +147,62 @@ def fix_lower_upper(s):
     s = ''.join(chars)
 
     return s
+
+
+def get_random_word():
+    
+    all_words = Word.objects.all()
+
+    if(len(all_words) == 0):
+
+        Global.objects.create(TotalWords = 0, MasteredCnt = 0, AlphaSort = 0)
+
+        ret = ["No word in the database", "", "", "", 0.0, 0]
+        return ret
+
+    words = []
+
+    for word in all_words:
+        words.append([word.Word, word.POS, word.Definition, word.Example, word.Weight, word.AppearCnt])
+
+    words.sort(key=lambda tup: tup[1], reverse=True)
+
+    top10 = []
+    for i in range(0, min(10, len(words))):
+        top10.append(words[i])
+
+    ret = top10[random.randint(0,len(top10)-1)]
+
+    return ret
+
+def update_info_about_old_word(request):
+
+    old_word = request.POST['word']
+    old_word_weight = request.POST['weight']
+    
+    check_box = 0
+
+    if('sort_order' in request.POST):
+        if(request.POST['sort_order'] == "on"):
+            check_box = 1
+        else:
+            check_box = 0
+    else:
+        check_box = 0
+
+    Global.objects.all().update(AlphaSort = check_box)
+
+    if(old_word_weight == 0):
+        print("ysssssssssssssssssssssssssssssssssssssssssssss")
+        Global.objects.all().update(MasteredCnt = MasteredCnt + 1)
+
+    Global.objects.all().update(TotalWords = len(Word.objects.all()))
+
+    db_entry =  Word.objects.filter(Word = old_word)
+
+    if(len(db_entry) == 0):
+        return
+
+    db_entry[0].AppearCnt += 1
+    db_entry[0].Weight = old_word_weight
+    db_entry[0].save()

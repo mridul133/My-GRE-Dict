@@ -8,3 +8,8 @@ class Word(models.Model):
     Weight = models.DecimalField(default = 100, max_digits = 100, decimal_places = 20)
     AppearCnt = models.BigIntegerField(default = 0)
 
+
+class Global(models.Model):
+    TotalWords = models.BigIntegerField(default = 0)
+    MasteredCnt = models.BigIntegerField(default = 0)
+    AlphaSort = models.BigIntegerField(default = 0)

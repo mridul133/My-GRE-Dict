@@ -16,15 +16,21 @@
     {% endfor %} {% endif %}
 
     <form class="search_bar" action="/action_page.php">
+
         <input type="text" placeholder="Search.." name="search">
+
         <button type="submit"><i class="fa fa-search"></i></button>
     </form>
 
 
-    <div class="container">
-        <li class="mastered">50/1200 words mastered</li>
+    <form name="form" action="." class="container" method="POST"> {% csrf_token %}
+        <li class="mastered"> {{mastered}}/{{total}} words mastered</li>
         <li class="sort_option">
-            <input type="checkbox" name="sort_order">
+
+            {% if alpha_sort == 1 %}
+            <input type="checkbox" name="sort_order" checked> {% else %}
+            <input type="checkbox" name="sort_order">{% endif %}
+
             <h3> show words in alphabetical order </h3>
         </li>
         <li class="add_new_word_btn" id="add_btn">
@@ -34,23 +40,26 @@
 
         <div class="display_word_container">
 
-            <h3 class="displayed_word" id="displayed_word">Grandiloquent</h3>
+            <h3 class="displayed_word" id="displayed_word">
+                {{ word }}
+            </h3>
             <h3 class="ques_mark" id="ques_mark" onclick=showDetails()>?</h3>
             <div class="word_details" id="word_details">
-                <h1>(Noun) show hide div onclick jquery the button
-                </h1>
-                <a> Example</a>
-                <h3> Manage multiple extendable via plugins - docs at asdf-vm.com asdf is a CLI tool that can manage multiple language runtime versions on a per-project basis. It is like gvm, nvm, rbenv & pyenv (and more) all in one! </h3>
+                <h1>{{ pos }} {{ def}} </h1>
+                <a>Example</a>
+                <h3> {{ exm }} </h3>
             </div>
         </div>
 
+        <a class="appear_cnt">Appeared {{ cnt }} times</a>
 
         <div class="slidecontainer">
-            <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+            <input type="range" min="0" max="100" step="1" value={{ weight }} class="slider" name="weight" id="myRange">
             <p>Weight : <span id="demo"></span></p>
         </div>
-        <span class="arrow"></span>
-    </div>
+        <input type="hidden" name="word" value={{ word }}>
+        <span class="arrow" onclick="form.submit()"></span>
+    </form>
 
 
 </body>

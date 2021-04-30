@@ -221,12 +221,13 @@ body {
     margin-left: 30%;
     position: fixed;
     background-color: #38ffa2;
-    opacity: 0.5;
+    opacity: 0.8;
     padding: 10px;
     border-radius: 10px;
     font-size: 20px;
     top: 10px;
     text-align: center;
+    z-index: 50;
 }
 
 .close_modal {
@@ -283,23 +284,31 @@ body {
     transform: translateY(0);
 }
 
+.appear_cnt {
+    position: absolute;
+    top: 60%;
+    left: 39%;
+    color: rgb(238 255 0 / 68%);
+    font-size: 23px;
+}
+
 .slidecontainer {
     position: absolute;
-    top: 68%;
+    top: 72%;
     left: 50%;
-    width: 800px;
-    margin-left: -400px;
+    width: 600px;
+    margin-left: -300px;
     /* background-color: blue; */
 }
 
 .slidecontainer p {
     position: absolute;
-    top: 65%;
+    top: 0;
     left: 49%;
-    width: 140px;
+    width: 150px;
     color: white;
-    font-size: 30px;
-    margin-left: -70px;
+    font-size: 28px;
+    margin-left: -75px;
 }
 
 .slider {
@@ -403,10 +412,6 @@ form.search_bar input[type=text] {
     height: 30px;
     background: #f1f1f1;
     border-radius: 10px 0px 0px 10px;
-    border: none;
-}
-
-form.search_bar input[type=text]:active {
     border: none;
 }
 
