@@ -4,6 +4,7 @@
 <head>
     {% load static %}
     <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -14,55 +15,112 @@
     <div class="alert_success" id="msg" role="alert"> {{ msg }} </div>
     {% endfor %} {% endif %}
 
+    <form class="search_bar" action="/action_page.php">
+        <input type="text" placeholder="Search.." name="search">
+        <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
 
-    <button class="show" aria-haspopup="true">Add New Word</button>
 
-    <div class="modal_mask" role="dialog"></div>
-    <div class="modal" role="alert">
-        <button class="close_modal" role="button">X</button>
+    <div class="container">
+        <li class="mastered">50/1200 words mastered</li>
+        <li class="sort_option">
+            <input type="checkbox" name="sort_order">
+            <h3> show words in alphabetical order </h3>
+        </li>
+        <li class="add_new_word_btn" id="add_btn">
+            <div class="add_new_word_btn_icon">+</div>
+            <div class="add_new_word_btn_text">Add New Word</div>
+        </li>
 
-        <form action="add_new_word" method="POST"> {% csrf_token %}
+        <div class="display_word_container">
 
-            <div class="word_container">
-                <input type="text" name="new_word" placeholder="Word*" required><br>
-                <input type="text" name="new_word_pos" placeholder="Part of Speech"><br>
-                <textarea rows="4" cols="35" name="new_word_def" placeholder="Definition*" required></textarea><br>
-                <textarea rows="8" cols="35" name="new_word_example" placeholder="Example"></textarea><br>
-                <input type="submit" value="Add">
+            <h3 class="displayed_word" id="displayed_word">Grandiloquent</h3>
+            <h3 class="ques_mark" id="ques_mark" onclick=showDetails()>?</h3>
+            <div class="word_details" id="word_details">
+                <h1>(Noun) show hide div onclick jquery the button
+                </h1>
+                <a> Example</a>
+                <h3> Manage multiple extendable via plugins - docs at asdf-vm.com asdf is a CLI tool that can manage multiple language runtime versions on a per-project basis. It is like gvm, nvm, rbenv & pyenv (and more) all in one! </h3>
             </div>
-        </form>
+        </div>
 
+
+        <div class="slidecontainer">
+            <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+            <p>Weight : <span id="demo"></span></p>
+        </div>
+        <span class="arrow"></span>
     </div>
 
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</body>
+<div class="modal_mask" role="dialog"></div>
+<div class="modal" role="alert">
+    <button class="close_modal" role="button">X</button>
+
+    <form action="add_new_word" method="POST"> {% csrf_token %}
+
+        <div class="word_container">
+            <input type="text" name="new_word" placeholder="Word*" required><br>
+            <input type="text" name="new_word_pos" placeholder="Part of Speech"><br>
+            <textarea rows="4" cols="35" name="new_word_def" placeholder="Definition*" required></textarea><br>
+            <textarea rows="8" cols="35" name="new_word_example" placeholder="Example"></textarea><br>
+            <input type="submit" value="Add">
+        </div>
+    </form>
+
+</div>
 
 
-    <script>
-        setTimeout(function() {
-            if ($('#msg').length > 0) {
-                $('#msg').remove();
-            }
-        }, 3000)
-    </script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-    <script>
-        $(".show").on("click", function() {
-            $(".modal_mask").addClass("active");
-        });
 
-        function closeModal() {
-            $(".modal_mask").removeClass("active");
+<script>
+    setTimeout(function() {
+        if ($('#msg').length > 0) {
+            $('#msg').remove();
         }
-        $(".close_modal").on("click", function() {
+    }, 3000)
+</script>
+
+<script>
+    $("#add_btn").on("click", function() {
+        $(".modal_mask").addClass("active");
+    });
+
+    function closeModal() {
+        $(".modal_mask").removeClass("active");
+    }
+    $(".close_modal").on("click", function() {
+        closeModal();
+    });
+    $(document).keyup(function(e) {
+        if (e.keyCode == 27) {
             closeModal();
-        });
-        $(document).keyup(function(e) {
-            if (e.keyCode == 27) {
-                closeModal();
-            }
-        });
-    </script>
+        }
+    });
+</script>
+
+<script>
+    function showDetails() {
+
+        document.getElementById('word_details').style.display = 'block';
+        document.getElementById('ques_mark').style.display = 'none';
+        document.getElementById('displayed_word').classList.remove('displayed_word');
+        document.getElementById('displayed_word').classList.add('displayed_word_with_details');
+    }
+</script>
+
+<script>
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+    }
+</script>
+
 
 </body>
 

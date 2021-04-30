@@ -10,6 +10,153 @@ body {
     cursor: pointer;
 }
 
+.display_word_container {
+    position: absolute;
+    margin-top: 45px;
+    width: 900px;
+    height: 275px;
+    background-color: #b7d7ca;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.displayed_word {
+    margin-top: 60px;
+    font-size: 65px;
+}
+
+.displayed_word_with_details {
+    margin-top: 10px;
+    font-size: 50px;
+}
+
+.word_details {
+    display: none;
+    margin-top: -40px;
+    min-height: 200px;
+    width: 100%;
+    background-color: #d7f3e7;
+    border-radius: 0px 0px 10px 10px;
+    text-align: justify;
+}
+
+.word_details h1 {
+    /* position: absolute; */
+    margin-left: 15px;
+    margin-right: 15px;
+    padding-top: 15px;
+    font-size: 30px;
+    font-family: sans-serif;
+    font-weight: normal;
+}
+
+.word_details a {
+    margin-left: 15px;
+    font-size: 25px;
+    font-family: 'Times New Roman';
+    color: #0f7d02;
+    font-weight: bold;
+}
+
+.word_details h3 {
+    /* position: absolute; */
+    margin-left: 15px;
+    margin-right: 15px;
+    padding-bottom: 10px;
+    margin-top: 0px;
+    font-size: 23px;
+    font-family: 'Times New Roman';
+    font-weight: normal;
+}
+
+.ques_mark {
+    cursor: pointer;
+    font-size: 65px;
+    color: white;
+    background-color: #319499;
+    -webkit-text-stroke: 1px rgb(59, 59, 59);
+    border-radius: 0px 0px 10px 10px;
+}
+
+.ques_mark:hover {
+    background-color: #17777c;
+    color: rgb(49, 49, 49);
+    -webkit-text-stroke: 1px rgb(180, 180, 180);
+}
+
+.container {
+    position: fixed;
+    top: 38%;
+    left: 62%;
+    width: 900px;
+    height: 550px;
+    margin-left: -450px;
+    margin-top: -160px;
+    /* background-color: blue; */
+    list-style: none;
+}
+
+.mastered {
+    position: absolute;
+    left: 0px;
+    font-size: 25px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 0px 10px 0px 10px;
+    border-radius: 10px;
+    color: rgb(6, 88, 6);
+}
+
+.sort_option {
+    position: absolute;
+    left: 36%;
+}
+
+.sort_option h3 {
+    font-weight: normal;
+    display: inline;
+    font-size: 25px;
+    color: rgb(233, 233, 233);
+}
+
+.add_new_word_btn {
+    position: absolute;
+    right: 0px;
+    cursor: pointer;
+    width: 152px;
+    height: 30px;
+    text-align: center;
+    border-radius: 30px;
+    background-color: rgb(195, 255, 255);
+}
+
+.add_new_word_btn:hover {
+    background-color: rgb(164, 214, 214);
+}
+
+.add_new_word_btn_icon {
+    font-size: 27px;
+    font-weight: bolder;
+    position: absolute;
+    background-color: rgb(20, 32, 33);
+    width: 28px;
+    height: 28px;
+    margin-left: 2px;
+    margin-top: 1px;
+    color: white;
+    border-radius: 28px;
+    padding-left: 1px;
+}
+
+.add_new_word_btn_text {
+    font-family: fantasy;
+    font-weight: bold;
+    position: absolute;
+    margin-left: 28px;
+    width: 120px;
+    height: 30px;
+    margin-top: 6px;
+}
+
 .word_container {
     margin-left: 10px;
     margin-top: 20px;
@@ -45,7 +192,14 @@ body {
     font-size: 20px;
     margin-top: 15px;
     cursor: pointer;
-    background-color: rgb(57, 171, 206);
+    background-color: rgb(34, 57, 59);
+    border-radius: 15px;
+    color: white;
+}
+
+.word_container input[type="submit"]:hover {
+    background-color: rgb(77, 143, 149);
+    color: white;
 }
 
 .manage_btn_container {
@@ -127,4 +281,147 @@ body {
     visibility: visible;
     opacity: 1;
     transform: translateY(0);
+}
+
+.slidecontainer {
+    position: absolute;
+    top: 68%;
+    left: 50%;
+    width: 800px;
+    margin-left: -400px;
+    /* background-color: blue; */
+}
+
+.slidecontainer p {
+    position: absolute;
+    top: 65%;
+    left: 49%;
+    width: 140px;
+    color: white;
+    font-size: 30px;
+    margin-left: -70px;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 1;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 0.7;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #0cbcc2;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #0cbcc2;
+    cursor: pointer;
+}
+
+.arrow {
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    top: 92%;
+    left: 49%;
+    width: 70px;
+    height: 70px;
+    margin-left: -35px;
+    margin-top: -35px;
+    border: solid 6px rgb(255, 255, 255);
+    border-radius: 100%;
+    z-index: 1;
+    transition: all 0.2s linear;
+}
+
+.arrow:before,
+.arrow:after {
+    content: "";
+    position: absolute;
+    width: 35%;
+    height: 10%;
+    top: 41%;
+    left: 55%;
+    background: rgb(255, 254, 254);
+    z-index: 2;
+    transform: translate(-50%, -50%) rotate(45deg);
+    transition: all 0.2s linear;
+}
+
+.arrow:after {
+    z-index: 3;
+    top: 59%;
+    left: 55%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.arrow:hover {
+    border: solid 8px rgb(107, 225, 246);
+}
+
+.arrow:hover:after,
+.arrow:hover:before {
+    background: rgb(107, 225, 246);
+}
+
+* {
+    box-sizing: border-box;
+    border: 0px black;
+}
+
+.search_bar {
+    position: fixed;
+    top: 3%;
+    left: 61%;
+    width: 550px;
+    margin-left: -275px;
+}
+
+form.search_bar input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    float: left;
+    width: 500px;
+    height: 30px;
+    background: #f1f1f1;
+    border-radius: 10px 0px 0px 10px;
+    border: none;
+}
+
+form.search_bar input[type=text]:active {
+    border: none;
+}
+
+form.search_bar button {
+    float: left;
+    width: 30px;
+    height: 30px;
+    background: #769b9b;
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+    border-radius: 0px 10px 10px 0px;
+    border: none;
+}
+
+form.search_bar button:hover {
+    background: #407070;
 }
