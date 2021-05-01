@@ -13,14 +13,24 @@ MX_WEIGHT = 100.0
 
 def home_view(request, *args, **kwargs):
 
+    print("---- 1 -----_> ", request.GET)
+    print("---- 2 -----_> ", request.POST)
+        
+
     old_word = ""
     if('word' in request.POST):
         update_info_about_old_word(request)
         old_word = request.POST['word']
 
-    word = get_next_word(old_word)
+    isSearched = 0
+    if('search' in request.GET):
+        isSearched = 1
+        old_word = request.GET['search']
+
+    word = get_next_word(old_word, isSearched)
 
     global_var = Global.objects.all()
+    all_words = Word.objects.all()
     
     ret = {}
 
@@ -35,7 +45,15 @@ def home_view(request, *args, **kwargs):
     ret['total'] = global_var[0].TotalWords
     ret['mx_weight'] = MX_WEIGHT
 
-    print("ret ----- >", ret)
+    lst = []
+    for w in all_words:
+        lst.append(str(w.Word))
+
+    json_list = json.dumps(lst)
+
+    ret['all_words'] = json_list
+
+    # print("ret ----- >", ret)
 
     return render(request, "home.html", ret)
 
@@ -153,7 +171,7 @@ def fix_lower_upper(s):
     return s
 
 
-def get_next_word(old_word):
+def get_next_word(old_word, isSearched):
     
     all_words = Word.objects.all()
 
@@ -165,7 +183,10 @@ def get_next_word(old_word):
         return ret
 
     if(len(all_words) > 1):
-        all_words = all_words.exclude(Word = old_word)
+        if(isSearched == 1):
+            all_words = all_words.filter(Word = old_word)
+        else:
+            all_words = all_words.exclude(Word = old_word)
 
     words = []
 
