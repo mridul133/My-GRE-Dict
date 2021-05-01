@@ -1,13 +1,36 @@
-body {
+/* body {
     background: url('background.jpg') no-repeat center center fixed;
     background-size: 100% 100%;
+} */
+
+body {
+    /* background: url('back.jpg') no-repeat center center fixed;
+    background-size: 100% 100%; */
+    background-color: teal;
+}
+
+.background_image {
+    position: absolute;
+    width: 1325px;
+    height: 674px;
+    margin-left: -10px;
+    margin-top: -10px;
 }
 
 .logo {
-    margin-left: 1%;
-    height: 8%;
-    width: 9%;
+    position: absolute;
+    height: 106px;
+    width: 120px;
     cursor: pointer;
+}
+
+.manage_icon {
+    position: absolute;
+    height: 55px;
+    width: 55px;
+    cursor: pointer;
+    margin-top: 120px;
+    margin-left: 30px;
 }
 
 .display_word_container {
@@ -86,13 +109,10 @@ body {
 
 .container {
     position: absolute;
-    top: 38%;
-    left: 62%;
     width: 900px;
     height: 550px;
-    margin-left: -450px;
-    margin-top: -160px;
-    /* background-color: blue; */
+    margin-left: 360px;
+    margin-top: 85px;
     list-style: none;
 }
 
@@ -202,30 +222,18 @@ body {
     color: white;
 }
 
-.search_icon {
-    position: absolute;
-    height: 20px;
-    width: 20px;
-    margin-top: -10px;
-    margin-left: -10px;
-}
-
-.manage_icon {
-    position: absolute;
-    margin-top: 10%;
-    margin-left: -6%;
-    height: 5.5%;
-    width: 2.8%;
-    cursor: pointer;
-}
-
 .manage_btn_container {
-    margin-left: 37%;
+    position: absolute;
+    /* background-color: red; */
+    width: 700px;
+    height: 300px;
+    margin-top: 120px;
+    margin-left: 450px;
 }
 
 .manage_btn {
     font-size: 22px;
-    width: 80%;
+    width: 100%;
     height: 55px;
     margin-bottom: 4px;
     border-radius: 10px;
@@ -425,10 +433,9 @@ body {
 
 .search_bar {
     position: absolute;
-    top: 3%;
-    left: 61%;
     width: 550px;
-    margin-left: -275px;
+    margin-left: 530px;
+    margin-top: 20px;
 }
 
 form.search_bar input[type=text] {
@@ -456,6 +463,14 @@ form.search_bar button {
 
 form.search_bar button:hover {
     background: #407070;
+}
+
+.search_icon {
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
 }
 
 .autocomplete-items {
