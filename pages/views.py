@@ -6,12 +6,10 @@ from pages.models import Word
 from pages.models import Global
 from django.contrib import messages 
 from django.db.models import F
-# from decimal import *
 import random
 
 MX_WEIGHT = 100.0
 
-# Create your views here.
 
 def home_view(request, *args, **kwargs):
 
@@ -189,11 +187,14 @@ def get_next_word(old_word):
 
     words.sort(key=lambda tup: tup[4], reverse=True)
 
-    top10 = []
-    for i in range(0, min(10, len(words))):
-        top10.append(words[i])
+    top_words = []
+    for i in range(0, len(words)):
+        if(words[i][4] == words[0][4]):
+            top_words.append(words[i])
 
-    ret = top10[random.randint(0,len(top10)-1)]
+    random.shuffle(top_words)
+
+    ret = top_words[0]
 
     return ret
 
