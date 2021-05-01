@@ -5,7 +5,7 @@ class Word(models.Model):
     POS = models.CharField(max_length = 20, blank = True)
     Definition = models.CharField(max_length = 300)
     Example = models.TextField(blank = True)
-    Weight = models.DecimalField(default = 100, max_digits = 100, decimal_places = 20)
+    Weight = models.FloatField(default = 100.0)
     AppearCnt = models.BigIntegerField(default = 0)
 
 

@@ -5,17 +5,22 @@ import os
 from pages.models import Word
 from pages.models import Global
 from django.contrib import messages 
+from django.db.models import F
+# from decimal import *
 import random
 
+MX_WEIGHT = 100.0
 
 # Create your views here.
 
 def home_view(request, *args, **kwargs):
 
+    old_word = ""
     if('word' in request.POST):
         update_info_about_old_word(request)
-    
-    word = get_random_word()
+        old_word = request.POST['word']
+
+    word = get_next_word(old_word)
 
     global_var = Global.objects.all()
     
@@ -30,6 +35,7 @@ def home_view(request, *args, **kwargs):
     ret['alpha_sort'] = global_var[0].AlphaSort
     ret['mastered'] = global_var[0].MasteredCnt
     ret['total'] = global_var[0].TotalWords
+    ret['mx_weight'] = MX_WEIGHT
 
     print("ret ----- >", ret)
 
@@ -49,7 +55,7 @@ def add_new_word(request):
     definition = fix_lower_upper(request.POST['new_word_def'])
     example = fix_lower_upper(request.POST['new_word_example'])
     
-    Word.objects.create(Word = word, POS = pos, Definition = definition, Example = example, Weight = 100.0, AppearCnt = 0)
+    Word.objects.create(Word = word, POS = pos, Definition = definition, Example = example, Weight = MX_WEIGHT, AppearCnt = 0)
 
     messages.success(request, "New word added !")
 
@@ -76,7 +82,7 @@ def initialize_db_with_magoosh1000(request):
         curr['definition'] = fix_lower_upper(curr['definition'])
         curr['example'] = fix_lower_upper(curr['example'])
 
-        Word.objects.create(Word = curr['word'], POS = curr['pos'], Definition = curr['definition'], Example = curr['example'], Weight = 100.0, AppearCnt = 0)
+        Word.objects.create(Word = curr['word'], POS = curr['pos'], Definition = curr['definition'], Example = curr['example'], Weight = MX_WEIGHT, AppearCnt = 0)
 
     messages.success(request, "Initialization successfull !")
 
@@ -88,7 +94,7 @@ def reset_all_weights_to_max(request):
     all_words = Word.objects.all()
 
     for word in all_words:
-        word.Weight = 100.0
+        word.Weight = MX_WEIGHT
         word.save()
     
     messages.success(request, "Weights have been reset successfully !")
@@ -149,7 +155,7 @@ def fix_lower_upper(s):
     return s
 
 
-def get_random_word():
+def get_next_word(old_word):
     
     all_words = Word.objects.all()
 
@@ -160,12 +166,28 @@ def get_random_word():
         ret = ["No word in the database", "", "", "", 0.0, 0]
         return ret
 
+    if(len(all_words) > 1):
+        all_words = all_words.exclude(Word = old_word)
+
     words = []
 
     for word in all_words:
         words.append([word.Word, word.POS, word.Definition, word.Example, word.Weight, word.AppearCnt])
 
-    words.sort(key=lambda tup: tup[1], reverse=True)
+    if(len(Global.objects.filter(AlphaSort = 1)) > 0):
+        words.sort(key=lambda tup: tup[0])
+        ind = 0
+        while(ind < len(words)):
+            if(words[ind][4] > MX_WEIGHT/5.0):
+                break
+            ind += 1
+        if(ind >= len(words)):
+            ind -= 1
+
+        return words[ind]
+        
+
+    words.sort(key=lambda tup: tup[4], reverse=True)
 
     top10 = []
     for i in range(0, min(10, len(words))):
@@ -178,7 +200,7 @@ def get_random_word():
 def update_info_about_old_word(request):
 
     old_word = request.POST['word']
-    old_word_weight = request.POST['weight']
+    old_word_weight = float(request.POST['weight'])
     
     check_box = 0
 
@@ -190,11 +212,12 @@ def update_info_about_old_word(request):
     else:
         check_box = 0
 
-    Global.objects.all().update(AlphaSort = check_box)
 
-    if(old_word_weight == 0):
-        print("ysssssssssssssssssssssssssssssssssssssssssssss")
-        Global.objects.all().update(MasteredCnt = MasteredCnt + 1)
+    Word.objects.filter(Weight__gt = MX_WEIGHT/5.0).update(Weight = F("Weight") + 1)
+    Word.objects.filter(Weight__lte = MX_WEIGHT/5.0).update(Weight = F("Weight") + 0.3)
+    Word.objects.filter(Weight__gt = MX_WEIGHT).update(Weight = MX_WEIGHT)
+
+    Global.objects.all().update(AlphaSort = check_box)
 
     Global.objects.all().update(TotalWords = len(Word.objects.all()))
 
@@ -204,5 +227,10 @@ def update_info_about_old_word(request):
         return
 
     db_entry[0].AppearCnt += 1
-    db_entry[0].Weight = old_word_weight
+
+    if(abs(old_word_weight-db_entry[0].Weight) >= 1.0):
+        db_entry[0].Weight = old_word_weight
     db_entry[0].save()
+
+    Global.objects.all().update(MasteredCnt = len(Word.objects.filter(Weight__lte = MX_WEIGHT/5.0)))
+    
