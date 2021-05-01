@@ -159,10 +159,10 @@ def get_next_word(old_word):
     
     all_words = Word.objects.all()
 
+    if(len(Global.objects.all()) == 0):
+        Global.objects.create(TotalWords = len(all_words), MasteredCnt = 0, AlphaSort = 0)
+
     if(len(all_words) == 0):
-
-        Global.objects.create(TotalWords = 0, MasteredCnt = 0, AlphaSort = 0)
-
         ret = ["No word in the database", "", "", "", 0.0, 0]
         return ret
 
