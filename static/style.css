@@ -202,6 +202,14 @@ body {
     color: white;
 }
 
+.search_icon {
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
+}
+
 .manage_icon {
     position: absolute;
     margin-top: 10%;
