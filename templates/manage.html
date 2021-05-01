@@ -7,45 +7,45 @@
 </head>
 
 <body>
+    <div class="main_container">
+        <img class="background_image" src="{% static 'background.jpg' %}">
 
-    <img class="background_image" src="{% static 'background.jpg' %}">
-
-    <a href="/"><img src="{% static 'logo.png' %}" class="logo"></a>
-
-
-    {%if messages %} {% for msg in messages %}
-    <div class="alert_success" id="msg" role="alert"> {{ msg }} </div>
-    {% endfor %} {% endif %}
-
-    <div class="manage_btn_container">
+        <a href="/"><img src="{% static 'logo.png' %}" class="logo"></a>
 
 
-        <form action='refresh_words' method='GET'>
-            <button class="manage_btn" type='submit'>Refresh Words (fix upper-lower cases) </button>
-        </form>
-        <form action='reset_all_weights_to_max' method='GET'>
-            <button class="manage_btn" type='submit' onclick="return confirm('Are you sure?');">Reset All Weights to 100</button>
-        </form>
-        <form action='initialize_db_with_magoosh1000' method='GET'>
-            <button class="manage_btn" type='submit' onclick="return confirm('Are you sure? Only magoosh 1000 words will remain in the databse.');">Initialize Database With Magoosh 1000 Words</button>
-        </form>
-        <form action='clear_db' method='GET'>
-            <button class="manage_btn" type='submit' onclick="return confirm('Are you sure? There will be no word in the databse.');">Clear Database</button>
-        </form>
+        {%if messages %} {% for msg in messages %}
+        <div class="alert_success" id="msg" role="alert"> {{ msg }} </div>
+        {% endfor %} {% endif %}
+
+        <div class="manage_btn_container">
+
+
+            <form action='refresh_words' method='GET'>
+                <button class="manage_btn" type='submit'>Refresh Words (fix upper-lower cases) </button>
+            </form>
+            <form action='reset_all_weights_to_max' method='GET'>
+                <button class="manage_btn" type='submit' onclick="return confirm('Are you sure?');">Reset All Weights to 100</button>
+            </form>
+            <form action='initialize_db_with_magoosh1000' method='GET'>
+                <button class="manage_btn" type='submit' onclick="return confirm('Are you sure? Only magoosh 1000 words will remain in the databse.');">Initialize Database With Magoosh 1000 Words</button>
+            </form>
+            <form action='clear_db' method='GET'>
+                <button class="manage_btn" type='submit' onclick="return confirm('Are you sure? There will be no word in the databse.');">Clear Database</button>
+            </form>
+        </div>
     </div>
-
-
-    <script src="{% static 'jquery.min.js' %}"></script>
-
-
-    <script>
-        setTimeout(function() {
-            if ($('#msg').length > 0) {
-                $('#msg').remove();
-            }
-        }, 3000)
-    </script>
-
 </body>
+
+<script src="{% static 'jquery.min.js' %}"></script>
+
+
+<script>
+    setTimeout(function() {
+        if ($('#msg').length > 0) {
+            $('#msg').remove();
+        }
+    }, 3000)
+</script>
+
 
 </html>

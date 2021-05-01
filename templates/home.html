@@ -7,79 +7,82 @@
 </head>
 
 <body>
-
-    <img class="background_image" src="{% static 'background.jpg' %}">
-    <a href="/"><img src="{% static 'logo.png' %}" class="logo"></a>
-    <a href="/manage"><img src="{% static 'manage_icon.png' %}" class="manage_icon"></a>
-
-
-    {%if messages %} {% for msg in messages %}
-    <div class="alert_success" id="msg" role="alert"> {{ msg }} </div>
-    {% endfor %} {% endif %}
-
-    <form class="search_bar" autocomplete="off" action="/.">
-        <input id="search" type="text" name="search" placeholder="Search..">
-        <button type="submit"><img src="{% static 'search_icon.png' %}" class="search_icon"></button>
-    </form>
+    <div class="main_container">
+        <img class="background_image" src="{% static 'background.jpg' %}">
+        <a href="/"><img src="{% static 'logo.png' %}" class="logo"></a>
+        <a href="/manage"><img src="{% static 'manage_icon.png' %}" class="manage_icon"></a>
 
 
-    <form name="form" action="." class="container" method="POST"> {% csrf_token %}
-        <li class="mastered"> {{mastered}}/{{total}} words mastered</li>
-        <li class="sort_option">
+        {%if messages %} {% for msg in messages %}
+        <div class="alert_success" id="msg" role="alert"> {{ msg }} </div>
+        {% endfor %} {% endif %}
 
-            {% if alpha_sort == 1 %}
-            <input type="checkbox" name="sort_order" checked> {% else %}
-            <input type="checkbox" name="sort_order">{% endif %}
+        <form class="search_bar" autocomplete="off" action="/.">
+            <input id="search" type="text" name="search" placeholder="Search..">
+            <button type="submit"><img src="{% static 'search_icon.png' %}" class="search_icon"></button>
+        </form>
 
-            <h3> show words in alphabetical order </h3>
-        </li>
-        <li class="add_new_word_btn" id="add_btn">
-            <div class="add_new_word_btn_icon">+</div>
-            <div class="add_new_word_btn_text">Add New Word</div>
-        </li>
 
-        <div class="display_word_container">
+        <form name="form" action="." class="container" method="POST"> {% csrf_token %}
+            <li class="mastered"> {{mastered}}/{{total}} words mastered</li>
+            <li class="sort_option">
 
-            <h3 class="displayed_word" id="displayed_word">
-                {{ word }}
-            </h3>
-            <h3 class="ques_mark" id="ques_mark" onclick=showDetails()>?</h3>
-            <div class="word_details" id="word_details">
-                <h1>{{ pos }} {{ def}} </h1>
-                <a>Example</a>
-                <h3> {{ exm }} </h3>
+                {% if alpha_sort == 1 %}
+                <input type="checkbox" name="sort_order" checked> {% else %}
+                <input type="checkbox" name="sort_order">{% endif %}
+
+                <h3> show words in alphabetical order </h3>
+            </li>
+            <li class="add_new_word_btn" id="add_btn">
+                <div class="add_new_word_btn_icon">+</div>
+                <div class="add_new_word_btn_text">Add New Word</div>
+            </li>
+
+            <div class="display_word_container">
+
+                <h3 class="displayed_word" id="displayed_word">
+                    {{ word }}
+                </h3>
+                <h3 class="ques_mark" id="ques_mark" onclick=showDetails()>?</h3>
+                <div class="word_details" id="word_details">
+                    <h1>{{ pos }} {{ def}} </h1>
+                    <a>Example</a>
+                    <h3> {{ exm }} </h3>
+                </div>
             </div>
-        </div>
 
-        <a class="appear_cnt">Appeared {{ cnt }} times</a>
+            <a class="appear_cnt">Appeared {{ cnt }} times</a>
 
-        <div class="slidecontainer">
-            <h1>mastered</h1>
-            <input type="range" min="0" max={{ mx_weight }} step="1" value={{ weight }} class="slider" name="weight" id="myRange">
-            <p>Weight : <span id="demo"></span></p>
-        </div>
-        <input type="hidden" name="word" value={{ word }}>
-        <span class="arrow" onclick="form.submit()"></span>
-    </form>
+            <div class="slidecontainer">
+                <h1>mastered</h1>
+                <input type="range" min="0" max={{ mx_weight }} step="1" value={{ weight }} class="slider" name="weight" id="myRange">
+                <p>Weight : <span id="demo"></span></p>
+            </div>
+            <input type="hidden" name="word" value={{ word }}>
+            <span class="arrow" onclick="form.submit()"></span>
+        </form>
+
+    </div>
 
 
+    <div class="modal_mask" role="dialog"></div>
+    <div class="modal" role="alert">
+        <button class="close_modal" role="button">X</button>
+
+        <form action="add_new_word" method="POST"> {% csrf_token %}
+
+            <div class="word_container">
+                <input type="text" name="new_word" placeholder="Word*" required><br>
+                <input type="text" name="new_word_pos" placeholder="Part of Speech"><br>
+                <textarea rows="4" cols="35" name="new_word_def" placeholder="Definition*" required></textarea><br>
+                <textarea rows="8" cols="35" name="new_word_example" placeholder="Example"></textarea><br>
+                <input type="submit" value="Add">
+            </div>
+        </form>
+
+    </div>
 </body>
-<div class="modal_mask" role="dialog"></div>
-<div class="modal" role="alert">
-    <button class="close_modal" role="button">X</button>
 
-    <form action="add_new_word" method="POST"> {% csrf_token %}
-
-        <div class="word_container">
-            <input type="text" name="new_word" placeholder="Word*" required><br>
-            <input type="text" name="new_word_pos" placeholder="Part of Speech"><br>
-            <textarea rows="4" cols="35" name="new_word_def" placeholder="Definition*" required></textarea><br>
-            <textarea rows="8" cols="35" name="new_word_example" placeholder="Example"></textarea><br>
-            <input type="submit" value="Add">
-        </div>
-    </form>
-
-</div>
 
 
 <script src="{% static 'jquery.min.js' %}"></script>
