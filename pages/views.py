@@ -49,8 +49,8 @@ def update_info_about_prev_word(request):
     Global.objects.all().update(AlphaSort = is_sort_order_alpha)
     Global.objects.all().update(TotalWords = len(Word.objects.all()))
 
-    Word.objects.filter(Weight__gt = MX_WEIGHT/5.0).update(Weight = F("Weight") + 1)
-    Word.objects.filter(Weight__lte = MX_WEIGHT/5.0).update(Weight = F("Weight") + 0.3)
+    Word.objects.filter(Weight__gt = MX_WEIGHT/5.0).update(Weight = F("Weight") + 0.3)
+    Word.objects.filter(Weight__lte = MX_WEIGHT/5.0).filter(Weight__gte = 1.0).update(Weight = F("Weight") + 0.1)
     Word.objects.filter(Weight__gt = MX_WEIGHT).update(Weight = MX_WEIGHT)
 
     db_entry =  Word.objects.filter(Word = prev_word)
@@ -104,7 +104,7 @@ def get_next_word(request, prev_word):
 
 def get_next_word_in_alphabatical_order(words):
 
-    words.sort(key=lambda tup: tup[0])
+    words.sort(key=lambda tup: (tup[0], tup[5]))
     ind = 0
     while(ind < len(words)):
         if(words[ind][4] > MX_WEIGHT/5.0):
@@ -117,11 +117,11 @@ def get_next_word_in_alphabatical_order(words):
 
 def get_next_high_weight_random_word(words):
     
-    words.sort(key=lambda tup: tup[4], reverse=True)
+    words.sort(key=lambda tup: (tup[4], -tup[5]), reverse=True)
 
     top_words = []
     for i in range(0, len(words)):
-        if(words[i][4] == words[0][4]):
+        if(words[i][4] == words[0][4] and words[i][5] == words[0][5]):
             top_words.append(words[i])
 
     random.shuffle(top_words)
@@ -169,6 +169,8 @@ def add_new_word(request):
     Word.objects.create(Word = word, POS = pos, Definition = definition, Example = example, Weight = MX_WEIGHT, AppearCnt = 0)
 
     messages.success(request, "New word added !")
+
+    Global.objects.all().update(TotalWords = len(Word.objects.all()))
 
     return HttpResponse("""<html><script>window.location.replace('/');</script></html>""")
 
