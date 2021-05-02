@@ -8,6 +8,11 @@
 
 <body>
     <div class="main_container">
+        <div class="spinner" id="spinner">
+            <div class="inner one"></div>
+            <div class="inner two"></div>
+            <div class="inner three"></div>
+        </div>
         <img class="background_image" src="{% static 'background.jpg' %}">
 
         <a href="/"><img src="{% static 'logo.png' %}" class="logo"></a>
@@ -20,17 +25,17 @@
         <div class="manage_btn_container">
 
 
-            <form action='refresh_words' method='GET'>
-                <button class="manage_btn" type='submit'>Refresh Words (fix upper-lower cases) </button>
+            <form id="refresh" action='refresh_words' method='GET'>
+                <button class="manage_btn" onclick="return manageFunc('refresh', 'Are you sure ?')">Refresh Words (fix upper-lower cases) </button>
             </form>
-            <form action='reset_all_weights_to_max' method='GET'>
-                <button class="manage_btn" type='submit' onclick="return confirm('Are you sure?');">Reset All Weights to 100</button>
+            <form id="reset_weights" action='reset_all_weights_to_max' method='GET'>
+                <button class="manage_btn" onclick="return manageFunc('reset_weights', 'Are you sure?')">Reset All Weights to 100</button>
             </form>
-            <form action='initialize_db_with_magoosh1000' method='GET'>
-                <button class="manage_btn" type='submit' onclick="return confirm('Are you sure? Only magoosh 1000 words will remain in the databse.');">Initialize Database With Magoosh 1000 Words</button>
+            <form id="magoosh" action='initialize_db_with_magoosh1000' method='GET'>
+                <button class="manage_btn" onclick="return manageFunc('magoosh', 'Are you sure? Only magoosh 1000 words will remain in the databse.')">Initialize Database With Magoosh 1000 Words</button>
             </form>
-            <form action='clear_db' method='GET'>
-                <button class="manage_btn" type='submit' onclick="return confirm('Are you sure? There will be no word in the databse.');">Clear Database</button>
+            <form id="clear" action='clear_db' method='GET'>
+                <button class="manage_btn" onclick="return manageFunc('clear', 'Are you sure? There will be no word in the databse.')">Clear Database</button>
             </form>
         </div>
     </div>
@@ -38,6 +43,18 @@
 
 <script src="{% static 'jquery.min.js' %}"></script>
 
+<script>
+    function manageFunc(formId, msg) {
+        var chk = confirm(msg);
+        if (chk) {
+            document.getElementById(formId).submit();
+            document.getElementById('spinner').style.display = 'block';
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
 
 <script>
     setTimeout(function() {
