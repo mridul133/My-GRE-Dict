@@ -58,11 +58,13 @@ def update_info_about_prev_word(request):
     if(len(db_entry) == 0):
         return ""
 
-    db_entry[0].AppearCnt += 1
+    for entry in db_entry:
 
-    if(abs(prev_word_weight-db_entry[0].Weight) >= 1.0):
-        db_entry[0].Weight = prev_word_weight
-    db_entry[0].save()
+        entry.AppearCnt += 1
+
+        if(abs(prev_word_weight-entry.Weight) >= 1.0):
+            entry.Weight = prev_word_weight
+        entry.save()
 
     Global.objects.all().update(MasteredCnt = len(Word.objects.filter(Weight__lte = MX_WEIGHT/5.0)))
     
