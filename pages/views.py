@@ -294,4 +294,4 @@ def fix_lower_upper(s):
 
     s = ''.join(chars)
 
-    return 
+    return s
