@@ -7,9 +7,11 @@ class Word(models.Model):
     Example = models.TextField(blank = True)
     Weight = models.FloatField(default = 100.0)
     AppearCnt = models.BigIntegerField(default = 0)
+    IsCached = models.BigIntegerField(default = 0)
 
 
 class Global(models.Model):
     TotalWords = models.BigIntegerField(default = 0)
     MasteredCnt = models.BigIntegerField(default = 0)
     AlphaSort = models.BigIntegerField(default = 0)
+    ShowFromCache = models.BigIntegerField(default = 0)

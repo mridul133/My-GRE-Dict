@@ -55,6 +55,20 @@ body {
     text-align: center;
 }
 
+.display_word_container input[type="checkbox"] {
+    position: absolute;
+    right: 90px;
+    top: 15px;
+}
+
+.display_word_container h2 {
+    /* display: inline; */
+    position: absolute;
+    right: 20px;
+    top: -10px;
+    font-weight: normal;
+}
+
 .displayed_word {
     margin-top: 60px;
     font-size: 65px;
@@ -140,7 +154,7 @@ body {
 
 .sort_option {
     position: absolute;
-    left: 36%;
+    left: 33%;
 }
 
 .sort_option h3 {

@@ -30,8 +30,14 @@
                 {% if alpha_sort == 1 %}
                 <input type="checkbox" name="sort_order" checked> {% else %}
                 <input type="checkbox" name="sort_order">{% endif %}
+                <h3> show alphabetically </h3>
+                <!--  -->
 
-                <h3> show words in alphabetical order </h3>
+                {% if show_from_cache == 1 %}
+                <input type="checkbox" name="show_from_cache" checked> {% else %}
+                <input type="checkbox" name="show_from_cache">{% endif %}
+                <h3> show from cache </h3>
+
             </li>
             <li class="add_new_word_btn" id="add_btn">
                 <div class="add_new_word_btn_icon">+</div>
@@ -39,6 +45,11 @@
             </li>
 
             <div class="display_word_container">
+
+                {% if is_cached == 1 %}
+                <input type="checkbox" name="is_cached" checked> {% else %}
+                <input type="checkbox" name="is_cached">{% endif %}
+                <h2> cached </h2>
 
                 <h3 class="displayed_word" id="displayed_word">
                     {{ word }}

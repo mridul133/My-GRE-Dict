@@ -36,7 +36,6 @@ def update_info_about_prev_word(request):
     prev_word_weight = float(request.POST['weight'])
     
     is_sort_order_alpha = 0
-
     if('sort_order' in request.POST):
         if(request.POST['sort_order'] == "on"):
             is_sort_order_alpha = 1
@@ -44,10 +43,30 @@ def update_info_about_prev_word(request):
             is_sort_order_alpha = 0
     else:
         is_sort_order_alpha = 0
+    
+    show_from_cache = 0
+    if('show_from_cache' in request.POST):
+        if(request.POST['show_from_cache'] == "on"):
+            show_from_cache = 1
+        else:
+            show_from_cache = 0
+    else:
+        show_from_cache = 0
         
 
     Global.objects.all().update(AlphaSort = is_sort_order_alpha)
+    Global.objects.all().update(ShowFromCache = show_from_cache)
     Global.objects.all().update(TotalWords = len(Word.objects.all()))
+
+
+    is_cached = 0
+    if('is_cached' in request.POST):
+        if(request.POST['is_cached'] == "on"):
+            is_cached = 1
+        else:
+            is_cached = 0
+    else:
+        is_cached = 0
 
     Word.objects.filter(Weight__gt = MX_WEIGHT/5.0).update(Weight = F("Weight") + 0.3)
     Word.objects.filter(Weight__lte = MX_WEIGHT/5.0).filter(Weight__gte = 1.0).update(Weight = F("Weight") + 0.1)
@@ -61,6 +80,7 @@ def update_info_about_prev_word(request):
     for entry in db_entry:
 
         entry.AppearCnt += 1
+        entry.IsCached = is_cached
 
         if(abs(prev_word_weight-entry.Weight) >= 1.0):
             entry.Weight = prev_word_weight
@@ -80,11 +100,17 @@ def get_next_word(request, prev_word):
     
     all_words = Word.objects.all()
 
+    if(len(Global.objects.filter(ShowFromCache = 1)) > 0):
+        all_words = all_words.filter(IsCached = 1)
+
     if(len(Global.objects.all()) == 0):
-        Global.objects.create(TotalWords = len(all_words), MasteredCnt = 0, AlphaSort = 0)
+        Global.objects.create(TotalWords = len(all_words), MasteredCnt = 0, AlphaSort = 0, ShowFromCache = 0)
 
     if(len(all_words) == 0):
-        ret = ["No word in the database", "", "", "", 0.0, 0]
+        msg = "No word in the database"
+        if(len(Global.objects.filter(ShowFromCache = 1)) > 0):
+            msg = "No word in cache"
+        ret = [msg, "", "", "", 0.0, 0, 0]
         return ret
 
     if(len(all_words) > 1):
@@ -96,7 +122,7 @@ def get_next_word(request, prev_word):
     words = []
 
     for word in all_words:
-        words.append([word.Word, word.POS, word.Definition, word.Example, word.Weight, word.AppearCnt])
+        words.append([word.Word, word.POS, word.Definition, word.Example, word.Weight, word.AppearCnt, word.IsCached])
 
     if(len(Global.objects.filter(AlphaSort = 1)) > 0):
         return get_next_word_in_alphabatical_order(words)
@@ -150,7 +176,9 @@ def get_return_object(next_word):
     ret['exm'] = next_word[3]
     ret['weight'] = next_word[4]
     ret['cnt'] = next_word[5]
+    ret['is_cached'] = next_word[6]
     ret['alpha_sort'] = global_var[0].AlphaSort
+    ret['show_from_cache'] = global_var[0].ShowFromCache
     ret['mastered'] = global_var[0].MasteredCnt
     ret['total'] = global_var[0].TotalWords
     ret['all_words'] = json_words
@@ -168,7 +196,7 @@ def add_new_word(request):
     definition = fix_lower_upper(request.POST['new_word_def'])
     example = fix_lower_upper(request.POST['new_word_example'])
     
-    Word.objects.create(Word = word, POS = pos, Definition = definition, Example = example, Weight = MX_WEIGHT, AppearCnt = 0)
+    Word.objects.create(Word = word, POS = pos, Definition = definition, Example = example, Weight = MX_WEIGHT, AppearCnt = 0, IsCached = 0)
 
     messages.success(request, "New word added !")
 
@@ -196,7 +224,7 @@ def initialize_db_with_magoosh1000(request):
         curr['definition'] = fix_lower_upper(curr['definition'])
         curr['example'] = fix_lower_upper(curr['example'])
 
-        Word.objects.create(Word = curr['word'], POS = curr['pos'], Definition = curr['definition'], Example = curr['example'], Weight = MX_WEIGHT, AppearCnt = 0)
+        Word.objects.create(Word = curr['word'], POS = curr['pos'], Definition = curr['definition'], Example = curr['example'], Weight = MX_WEIGHT, AppearCnt = 0, IsCached = 0)
 
     messages.success(request, "Initialization successfull !")
 
@@ -266,4 +294,4 @@ def fix_lower_upper(s):
 
     s = ''.join(chars)
 
-    return s
+    return 
