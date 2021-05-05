@@ -100,7 +100,7 @@ def get_next_word(request, prev_word):
     
     all_words = Word.objects.all()
 
-    if(len(Global.objects.filter(ShowFromCache = 1)) > 0):
+    if(isSearched == 0 and len(Global.objects.filter(ShowFromCache = 1)) > 0):
         all_words = all_words.filter(IsCached = 1)
 
     if(len(Global.objects.all()) == 0):
@@ -116,6 +116,8 @@ def get_next_word(request, prev_word):
     if(len(all_words) > 1):
         if(isSearched == 1):
             all_words = all_words.filter(Word = prev_word)
+            if(len(all_words) == 0):
+                all_words = Word.objects.all()
         else:
             all_words = all_words.exclude(Word = prev_word)
 
