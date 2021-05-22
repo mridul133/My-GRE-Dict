@@ -185,6 +185,7 @@ def get_return_object(next_word):
     ret['total'] = global_var[0].TotalWords
     ret['all_words'] = json_words
     ret['mx_weight'] = MX_WEIGHT
+    ret['cache_cnt'] = len(all_words.filter(IsCached = 1))
 
     return ret
 

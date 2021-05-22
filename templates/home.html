@@ -30,16 +30,16 @@
             <li class="mastered"> {{mastered}}/{{total}} words mastered</li>
             <li class="sort_option">
 
-                {% if alpha_sort == 1 %}
+                <!-- {% if alpha_sort == 1 %}
                 <input type="checkbox" name="sort_order" checked> {% else %}
                 <input type="checkbox" name="sort_order">{% endif %}
-                <h3> show alphabetically </h3>
+                <h3> show alphabetically </h3> -->
                 <!--  -->
 
                 {% if show_from_cache == 1 %}
                 <input type="checkbox" name="show_from_cache" checked> {% else %}
                 <input type="checkbox" name="show_from_cache">{% endif %}
-                <h3> show from cache </h3>
+                <h3> show from cache ({{cache_cnt}}) </h3>
 
             </li>
             <li class="add_new_word_btn" id="add_btn">
