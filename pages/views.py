@@ -199,7 +199,7 @@ def add_new_word(request):
     definition = fix_lower_upper(request.POST['new_word_def'])
     example = fix_lower_upper(request.POST['new_word_example'])
     
-    Word.objects.create(Word = word, POS = pos, Definition = definition, Example = example, Weight = MX_WEIGHT, AppearCnt = 0, IsCached = 0)
+    Word.objects.create(Word = word, POS = pos, Definition = definition, Example = example, Weight = MX_WEIGHT, AppearCnt = 0, IsCached = 1)
 
     messages.success(request, "New word added !")
 
